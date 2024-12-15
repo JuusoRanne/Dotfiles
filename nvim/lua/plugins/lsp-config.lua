@@ -14,7 +14,7 @@ return {
     lazy = false,
     opts = {
       ensure_installed =
-      { "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "ts_ls", "html", "cssls", "texlab"},
+      {"rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "ts_ls", "html", "cssls", "texlab"},
     }
   },
 

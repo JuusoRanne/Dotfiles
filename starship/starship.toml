@@ -1,151 +1,99 @@
-
-"$schema" = "https://starship.rs/config-schema.json"
-
 format = """
-[╭──](bold bright-cyan)\
-[](fg:#002B36)\
-[$os](bg:#002B36 fg:#00FFFF)\
-[](fg:#005f87 bg:#002B36)\
-[🔷 $username@$hostname](fg:#002B36 bg:#005f87 bold)\
-[](fg:#268BD2 bg:#005f87)\
+$os\
+$username\
+$hostname\
 $directory\
-([](fg:prev_bg bg:#2AA198)\
-$git_branch$git_status)\
-([](fg:prev_bg bg:#B58900)\
-$golang\
-$nodejs\
-$bun\
-$deno\
-$rust\
-$python\
-$ruby\
-$lua)\
-([](fg:prev_bg bg:#859900)\
-$package)\
-([](fg:prev_bg bg:#D33682)\
-$aws\
-$azure\
-$gcloud\
-$kubernetes)\
-([](fg:prev_bg bg:#6C71C4)\
-$docker_context)\
-[](fg:prev_bg bg:#002B36)\
-$time\
-[($shell)](bg:#002B36 fg:#00FFFF bold)\
-[](fg:#002B36)\
-[$line_break│](bold bright-cyan)\
-[$line_break╰──$character ](bold bright-cyan)\
+$git_branch\
+$git_state\
+$git_status\
+$character"""
+
+right_format = """
+$git_branch\
 """
 
-continuation_prompt = "[╰──⯈⯈ ](bold bright-cyan)"
-command_timeout = 1000
-
-[line_break]
-disabled = false
-
-[character]
-success_symbol = "[⯈⯈](bold bright-cyan)"
-error_symbol = "[⯈⯈](bold bright-red)"
+add_newline = false
+palette = "everforest"
 
 [os]
-format = "[ $symbol]($style)"
-style = "fg:#002B36 bg:#00FFFF"
-disabled = true 
+disabled = false
+format = '[$symbol ]($style)'
+style = 'fg:grey2'
 
-[hostname]
-ssh_only = true
-style = "bg:#005f87 fg:#002B36 bold"
-format = "[ $hostname ]($style)"
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
 
 [username]
 show_always = true
-style_user = "bg:#005f87 fg:#002B36 bold"
-style_root = "bold bg:#005f87 fg:#002B36"
-format = "[ 👤 ($user) ]($style)"
-disabled = true
+style_root = 'fg:red'
+style_user = 'fg:blue'
+format = '[$user]($style)'
+
+[hostname]
+ssh_only = false
+style = 'fg:blue'
+format = '[@$hostname]($style) '
 
 [directory]
-style = "bg:#268BD2 fg:#002B36"
-format = "[ $path ]($style)"
-truncation_length = 2
+style = "fg:orange"
+read_only_style = "fg:orange"
+truncation_length = 3
 truncation_symbol = "…/"
-
-[directory.substitutions]
-"Documents" = "📁"
-"Downloads" = "⬇️"
-"Music" = "🎵"
-"Pictures" = "🖼️"
+format = "[ $path]($style)[$read_only]($read_only_style) "
 
 [git_branch]
-style = "bg:#2AA198"
-format = "[[ 🛰️ $branch ](fg:#002B36 bg:#2AA198)]($style)"
-truncation_length = 25
+style = "fg:green"
+symbol = " "
+format = "[$symbol$branch(:$remote_branch)]($style) "
 
-[git_status]
-style = "bg:#2AA198"
-format = "[[($all_status$ahead_behind )](fg:#002B36 bg:#2AA198)]($style)"
+[character]
+success_symbol = '[](bold green)'
+error_symbol = '[](bold red)'
 
-[shell]
-disabled = true 
-style = "fg:#00FFFF bg:#002B36 bold"
+[palettes.everforest]
+bg_dim = "#232a2e"
+bg0 = "#2d353b"
+bg1 = "#343f44"
+bg2 = "#3d484d"
+bg3 = "#475258"
+bg4 = "#4f585e"
+bg5 = "#56635f"
+bg_visual = "#543a48"
+bg_red = "#514045"
+bg_green = "#425047"
+bg_blue = "#3a515d"
+bg_yellow = "#4d4c43"
 
-[time]
-disabled = false
-time_format = "%H:%M"
-style = "fg:#00FFFF bg:#002B36"
-format = "[$time](fg:#00FFFF bg:#002B36)"
+fg = "#d3c6aa"
+red = "#e67e80"
 
-
-[package]
-style = "fg:#002B36 bg:#859900"
-format = "[ $symbol$version ]($style)"
-
-[aws]
-style = "bg:#D33682"
-format = "[[ ☁️ $profile ](fg:#002B36 bg:#D33682)]($style)"
-
-[azure]
-disabled = false
-style = "bg:#D33682"
-format = "[[ ☁️ $subscription ](fg:#002B36 bg:#D33682)]($style)"
-
-[gcloud]
-style = "bg:#D33682"
-format = "[[ ☁️ $account ](fg:#002B36 bg:#D33682)]($style)"
-
-[kubernetes]
-disabled = false
-style = "bg:#D33682"
-format = "[[ ☁️ $context ](fg:#002B36 bg:#D33682)]($style)"
-
-[docker_context]
-style = "bg:#6C71C4"
-format = "[[ 🐳 $context ](fg:#002B36 bg:#6C71C4)]($style)"
-
-[ruby]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 💎 $version ]($style)"
-
-[rust]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 🦀 $version ]($style)"
-
-[golang]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 🐹 $version ]($style)"
-
-[lua]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 🌙 $version ]($style)"
-
-[bun]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 🍞 $version ]($style)"
-
-[nodejs]
-style = "fg:#002B36 bg:#B58900"
-format = "[ 🟢 $version ]($style)"
-detect_files = ["package.json", ".node-version", "!bunfig.toml", "!bun.lockb"]
-
-[deno]
-style = "fg:#002B36 bg:#B58900"
+orange = "#e69875"
+yellow = "#dbbc7f"
+green = "#a7c080"
+aqua = "#83c092"
+blue = "#7fbbb3"
+purple = "#d699b6"
+grey0 = "#7a8478"
+grey1 = "#859289"
+grey2 = "#9da9a0"
+statusline1 = "#a7c080"
+statusline2 = "#d3c6aa"
+statusline3 = "#e67e80"
