@@ -5,7 +5,6 @@ return {
     opts = {
       ensure_installed = {
         "tailwindcss-language-server",
-        "typescript-language-server",
       }
     }
   },
@@ -14,7 +13,7 @@ return {
     lazy = false,
     opts = {
       ensure_installed =
-      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "ts_ls", "html", "cssls", "texlab"},
+      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab"},
     }
   },
 
@@ -28,9 +27,6 @@ return {
       local util = require "lspconfig/util"
 
       lspconfig.lua_ls.setup({
-        capabilities = capabilities
-      })
-      lspconfig.ts_ls.setup({
         capabilities = capabilities
       })
       lspconfig.bashls.setup({
