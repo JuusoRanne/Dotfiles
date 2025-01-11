@@ -42,7 +42,6 @@ return {
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
           ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-          ['<Enter>'] = cmp.mapping.confirm({ select = true }),
           ['<C-j>'] = cmp.mapping.select_next_item(),
           -- Ctrl + k to select previous item
           ['<C-k>'] = cmp.mapping.select_prev_item(),
