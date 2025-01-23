@@ -13,7 +13,7 @@ return {
     lazy = false,
     opts = {
       ensure_installed =
-      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab"},
+      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab", "yamlls"},
     }
   },
 
@@ -72,6 +72,10 @@ return {
       lspconfig.jsonls.setup({
         capabilities = capabilities
       })
+      lspconfig.yamlls.setup({
+        capabilities = capabilities
+      })
+
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
