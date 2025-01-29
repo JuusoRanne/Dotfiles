@@ -13,7 +13,7 @@ return {
     lazy = false,
     opts = {
       ensure_installed =
-      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab", "yamlls"},
+      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab", "yamlls", "ts_ls"},
     }
   },
 
@@ -29,6 +29,10 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities
+      })
+
       lspconfig.bashls.setup({
         capabilities = capabilities
       })
