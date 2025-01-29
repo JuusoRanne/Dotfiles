@@ -26,3 +26,16 @@ palette = 14=#83C092
 palette = 15=#D3C6AA
 
 background-opacity = 0.9
+
+macos-titlebar-style = transparent
+
+keybind = cmd+t=unbind
+keybind = cmd+n=unbind
+keybind = cmd+c=unbind
+keybind = cmd+w=unbind
+keybind = cmd+opt+left=unbind
+keybind = cmd+opt+right=unbind
+keybind = opt+h=unbind
+keybind = opt+j=unbind
+keybind = opt+k=unbind
+keybind = opt+l=unbind
