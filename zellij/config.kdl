@@ -16,7 +16,6 @@ themes {
 
 pane_frames false
 
-<<<<<<< HEAD
 keybinds {
   normal {
     bind "alt h" { MoveFocus "Left"; }
@@ -25,6 +24,4 @@ keybinds {
     bind "alt l" { MoveFocus "Right"; }
   }
 }
-=======
 copy_command: "wl-copy"
->>>>>>> c1e3f8e (added ghostty)
