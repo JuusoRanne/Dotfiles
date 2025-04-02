@@ -20,7 +20,7 @@ require("lazy").setup("plugins")
 require("everforest").load()
 
 
-vim.cmd(":Copilot disable")
+-- vim.cmd(":Copilot disable")
 
 -- Make Nvim transparent
 vim.cmd [[
