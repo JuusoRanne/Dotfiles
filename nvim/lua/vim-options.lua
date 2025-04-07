@@ -9,8 +9,10 @@ vim.g.mapleader = "å"
 vim.api.nvim_set_keymap('i', '<C-l>', '<Esc>la', { noremap = true, silent = true })
 
 
+
 -- Copilot mapping
 vim.api.nvim_set_keymap('i', '<Leader><Tab>', 'copilot#Accept("<CR>")', {expr = true, silent = true})
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR><Esc>", { desc = "Clear search highlight on Esc" })
 vim.api.nvim_set_var('copilot_no_tab_map', true)
 
 
