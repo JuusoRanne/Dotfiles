@@ -25,3 +25,5 @@ keybinds {
   }
 }
 copy_command: "wl-copy"
+
+theme: everforest-dark-medium
