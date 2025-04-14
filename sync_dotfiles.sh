@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Source directory
-DOTFILES_DIR=~/dotfiles
+DOTFILES_DIR=~/Dotfiles
 
 # Target directory
 CONFIG_DIR=~/.config
