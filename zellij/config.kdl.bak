@@ -1,0 +1,12 @@
+pane_frames false
+
+keybinds {
+  normal {
+    bind "alt h" { MoveFocus "Left"; }
+    bind "alt j" { MoveFocus "Down"; }
+    bind "alt k" { MoveFocus "Up"; }
+    bind "alt l" { MoveFocus "Right"; }
+  }
+}
+copy_command: "wl-copy"
+

@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 -- get lazy configs and plugs (points to plugins.lua)
 require("vim-options")
 require("lazy").setup("plugins")
-require("everforest").load()
+require("catppuccin").load()
 
 
 -- vim.cmd(":Copilot disable")
