@@ -8,7 +8,7 @@ DOTFILES_DIR=~/dotfiles
 CONFIG_DIR=~/.config
 
 # List of configurations to mirror
-CONFIGS=("kitty" "neofetch" "nvim" "rofi" "starship" "zellij" "ghostty")
+CONFIGS=("nvim" "zellij")
 
 # Ensure the ~/.config directory exists
 mkdir -p "$CONFIG_DIR"
