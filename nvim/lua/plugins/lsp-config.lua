@@ -16,7 +16,6 @@ return {
       {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab", "yamlls", "ts_ls"},
     }
   },
-
   {
     "neovim/nvim-lspconfig",
     lazy = false,
