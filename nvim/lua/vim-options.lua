@@ -15,6 +15,12 @@ vim.api.nvim_set_keymap('i', '<Leader><Tab>', 'copilot#Accept("<CR>")', {expr = 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR><Esc>", { desc = "Clear search highlight on Esc" })
 vim.api.nvim_set_var('copilot_no_tab_map', true)
 
+vim.keymap.set("n", "<leader>gp", function()
+  vim.cmd("silent !prettier --write " .. vim.fn.expand("%"))
+  vim.cmd("edit!") -- reload the file after formatting
+end, { desc = "Format file with Prettier" })
+
+
 
 -- Set additional filetypes
 vim.filetype.add({
