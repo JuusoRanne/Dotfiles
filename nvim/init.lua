@@ -13,14 +13,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 -- get lazy configs and plugs (points to plugins.lua)
 require("vim-options")
 require("lazy").setup("plugins")
 require("everforest").load()
 
-
-vim.cmd(":Copilot disable")
+-- Copilot setup
+-- vim.cmd(":Copilot disable")
 
 -- Make Nvim transparent
 vim.cmd [[
