@@ -12,8 +12,12 @@ return {
     "williamboman/mason-lspconfig.nvim",
     lazy = false,
     opts = {
-      ensure_installed =
-      {"bashls", "rust_analyzer", "lua_ls", "bashls", "marksman", "pyright", "terraformls", "tflint", "azure_pipelines_ls", "jsonls", "gopls", "html", "cssls", "texlab", "yamlls", "ts_ls"},
+      ensure_installed = {
+        "bashls", "rust_analyzer", "lua_ls", "marksman", "pyright", 
+        "terraformls", "tflint", "azure_pipelines_ls", "jsonls", 
+        "gopls", "html", "cssls", "texlab", "ts_ls"
+      },
+      automatic_installation = false,
     }
   },
 
@@ -21,10 +25,15 @@ return {
     "neovim/nvim-lspconfig",
     lazy = false,
     config = function()
-      local capabilities = require('cmp_nvim_lsp').capabilities
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
       local lspconfig = require("lspconfig")
-      local util = require "lspconfig/util"
+      local util = require("lspconfig/util")
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities
@@ -32,7 +41,6 @@ return {
       lspconfig.ts_ls.setup({
         capabilities = capabilities
       })
-
       lspconfig.bashls.setup({
         capabilities = capabilities
       })
@@ -54,14 +62,12 @@ return {
       lspconfig.cssls.setup({
         capabilities = capabilities
       })
-
       lspconfig.azure_pipelines_ls.setup({
         capabilities = capabilities
       })
       lspconfig.texlab.setup({
         capabilities = capabilities
       })
-
       lspconfig.gopls.setup({
         capabilities = capabilities,
         cmd = { "gopls" },
@@ -76,18 +82,18 @@ return {
       lspconfig.jsonls.setup({
         capabilities = capabilities
       })
-      lspconfig.yamlls.setup({
-        capabilities = capabilities
+      -- Disable yamlls completely by preventing filetype detection
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "yaml",
+        callback = function()
+          vim.bo.filetype = "text"  -- Change filetype to prevent LSP attachment
+        end,
       })
-
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
       vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
-      -- Set up a keybinding to rename a symbol using LSP
       vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { desc = "Rename symbol" })
-
     end,
   },
-
 }
