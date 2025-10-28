@@ -13,9 +13,9 @@ return {
     lazy = false,
     opts = {
       ensure_installed = {
-        "bashls", "rust_analyzer", "lua_ls", "marksman", "pyright", 
-        "terraformls", "tflint", "azure_pipelines_ls", "jsonls", 
-        "gopls", "html", "cssls", "texlab", "ts_ls"
+        "bashls", "rust_analyzer", "lua_ls", "marksman", "pyright",
+        "terraformls", "tflint", "jsonls",
+        "gopls", "html", "cssls", "texlab", "ts_ls", "yamlls"
       },
       automatic_installation = false,
     }
@@ -62,9 +62,6 @@ return {
       lspconfig.cssls.setup({
         capabilities = capabilities
       })
-      lspconfig.azure_pipelines_ls.setup({
-        capabilities = capabilities
-      })
       lspconfig.texlab.setup({
         capabilities = capabilities
       })
@@ -82,12 +79,19 @@ return {
       lspconfig.jsonls.setup({
         capabilities = capabilities
       })
-      -- Disable yamlls completely by preventing filetype detection
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "yaml",
-        callback = function()
-          vim.bo.filetype = "text"  -- Change filetype to prevent LSP attachment
+      lspconfig.yamlls.setup({
+        capabilities = capabilities,
+        filetypes = { "yaml", "yml" },
+        root_dir = function(fname)
+          return util.root_pattern(".git")(fname) or vim.fn.getcwd()
         end,
+        settings = {
+          yaml = {
+            schemas = {
+              ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+            },
+          },
+        },
       })
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})

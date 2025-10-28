@@ -30,36 +30,5 @@ vim.keymap.set("n", "<leader>cp", "<cmd>Copilot chat prompts<CR>", { desc = "Ope
 vim.filetype.add({
   extension = {
     tfvars = "text",  -- tfvars is not supported by terraformls, this is workaround
-    yaml = "text",    -- Disable yaml filetype to prevent LSP issues
-    yml = "text",     -- Disable yml filetype to prevent LSP issues
   }
 })
-
--- Disable LSP entirely for YAML files due to URI scheme errors
-vim.api.nvim_create_autocmd({"BufReadPre", "BufNewFile"}, {
-  pattern = {"*.yaml", "*.yml"},
-  callback = function()
-    vim.b.lsp_fallback = "none"
-    vim.lsp.for_each_buffer_client(0, function(client)
-      if client.name == "yamlls" then
-        vim.lsp.buf_detach_client(0, client.id)
-      end
-    end)
-  end,
-})
-
--- Override LSP start to prevent yamlls URI errors
-local orig_start_client = vim.lsp.start_client
-vim.lsp.start_client = function(config)
-  if config and (config.name == "yamlls" or (config.cmd and config.cmd[1] and config.cmd[1]:match("yaml"))) then
-    return nil
-  end
-  return orig_start_client(config)
-end
-
--- Disable LSP attachment for yaml entirely
-vim.g.lsp_settings = {
-  yamlls = {
-    disable = true
-  }
-}
