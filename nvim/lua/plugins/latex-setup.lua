@@ -151,7 +151,7 @@ return {
           showcmd = false,
           laststatus = 0,
         },
-        twilight = { enabled = true },
+        twilight = { enabled = false },
         gitsigns = { enabled = false },
       },
       on_open = function()
@@ -179,6 +179,23 @@ return {
       },
       context = 10,
       treesitter = true,
+      expand = {
+        "generic_environment",
+        "math_environment",
+        "displayed_equation",
+        "section",
+        "subsection",
+        "subsubsection",
+        "paragraph",
+      },
+      exclude = {
+        "text",
+        "word",
+        "curly_group",
+        "brack_group",
+        "command",
+        "line_break",
+      },
     },
   },
 }
