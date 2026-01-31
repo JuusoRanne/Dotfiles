@@ -4,6 +4,10 @@ return {
     "hrsh7th/cmp-nvim-lsp",
   },
   {
+    "hrsh7th/cmp-omni",
+    ft = "tex",
+  },
+  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true
@@ -48,8 +52,17 @@ return {
         }),
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },       -- For luasnip users.
+          { name = 'luasnip' },
         }, {
+          { name = 'buffer' },
+        })
+      })
+
+      -- LaTeX-specific completion with vimtex omni
+      cmp.setup.filetype('tex', {
+        sources = cmp.config.sources({
+          { name = 'omni' },
+          { name = 'luasnip' },
           { name = 'buffer' },
         })
       })
