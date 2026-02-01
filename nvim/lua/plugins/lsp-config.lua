@@ -108,7 +108,22 @@ return {
 					yaml = {
 						schemas = {
 							["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+							["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = {
+								"k8s/**/*.yaml",
+								"k8s/**/*.yml",
+								"kubernetes/**/*.yaml",
+								"kubernetes/**/*.yml",
+								"**/deployment*.yaml",
+								"**/deployment*.yml",
+								"**/service*.yaml",
+								"**/service*.yml",
+								"**/configmap*.yaml",
+								"**/configmap*.yml",
+							},
 						},
+						validate = true,
+						completion = true,
+						hover = true,
 					},
 				},
 			}

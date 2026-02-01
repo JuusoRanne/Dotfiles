@@ -1,26 +1,59 @@
--- Lua configuration for Neovim
 return {
-  -- Vimtex plugin
-  "lervag/vimtex",
+  {
+    "lervag/vimtex",
+    lazy = false,
+    ft = "tex",
+    config = function()
+      -- Use zathura as PDF viewer with synctex support
+      vim.g.vimtex_view_method = "zathura"
 
-  -- Vimtex settings
-  config = function()
-    -- Set the view method to 'general' and configure it to use 'evince'
-    vim.g.vimtex_view_method = 'general'
-    vim.g.vimtex_view_general_viewer = 'evince'
-    vim.g.vimtex_view_general_options = '--unique file:@pdf\\#src:@line@tex'
+      -- Compiler settings
+      vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          "-pdf",
+          "-shell-escape",
+          "-verbose",
+          "-file-line-error",
+          "-synctex=1",
+          "-interaction=nonstopmode",
+        },
+      }
 
-    -- Configure folding for Vimtex
-    vim.o.foldmethod = "expr"
-    vim.o.foldexpr = "vimtex#fold#level(v:lnum)"
-    vim.o.foldtext = "vimtex#fold#text()"
-    vim.o.foldlevel = 2
+      -- Quickfix settings
+      vim.g.vimtex_quickfix_mode = 0
 
-    -- Set local leader key
-    vim.g.maplocalleader = ","
+      -- Enable conceal for prettier display (e.g., \alpha -> α)
+      vim.g.vimtex_syntax_conceal = {
+        accents = 1,
+        cites = 1,
+        fancy = 1,
+        greek = 1,
+        math_bounds = 1,
+        math_delimiters = 1,
+        math_fracs = 1,
+        math_super_sub = 1,
+        math_symbols = 1,
+        sections = 0,
+        styles = 1,
+      }
 
-    -- Basic LaTeX template
-    local latex_template = [[
+      -- Set local leader key
+      vim.g.maplocalleader = ","
+
+      -- <leader>c to compile
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "tex",
+        callback = function()
+          vim.keymap.set("n", "<leader>c", "<cmd>VimtexCompile<CR>", {
+            buffer = true,
+            desc = "Compile LaTeX document",
+          })
+        end,
+      })
+
+      -- Basic LaTeX template
+      local latex_template = [[
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -39,74 +72,130 @@ return {
 \end{document}
 ]]
 
-    -- Function to create a LaTeX template
-    local function create_latex_template()
-      local buf = vim.api.nvim_get_current_buf()
-      local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
-      local filename = vim.api.nvim_buf_get_name(buf)
-
-      print("create_latex_template called for file: " .. filename)
-      vim.api.nvim_command("filetype detect") -- Ensure filetype detection
-
-      -- Recheck filetype
-      filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
-      print("Rechecked filetype: " .. filetype)
-
-      if filetype == 'tex' then
-        -- Check if the buffer is empty
+      -- Function to create a LaTeX template for new files
+      local function create_latex_template()
+        local buf = vim.api.nvim_get_current_buf()
         local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-        local is_empty = true
-        for _, line in ipairs(lines) do
-          if not vim.fn.empty(vim.fn.trim(line)) then
-            is_empty = false
-            break
-          end
-        end
-
-        print("Is buffer empty: " .. tostring(is_empty))
+        local is_empty = #lines == 0 or (#lines == 1 and lines[1] == "")
 
         if is_empty then
-          -- Insert the LaTeX template
           vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(latex_template, "\n"))
-          vim.api.nvim_command("write") -- Save the buffer to persist changes
-          print("LaTeX template inserted")
-        else
-          print("Buffer is not empty, no template inserted")
         end
-      else
-        print("Filetype is not 'tex', no template inserted")
       end
-    end
 
-    -- Function to compile LaTeX file if Vimtex is not active
-    local function compile_latex_file()
-      vim.cmd("VimtexCompile")
-    end
+      vim.api.nvim_create_autocmd("BufNewFile", {
+        pattern = "*.tex",
+        callback = function()
+          vim.defer_fn(create_latex_template, 100)
+        end,
+      })
 
-    -- Create an autocommand group for LaTeX file creation
-    vim.api.nvim_create_augroup("LatexFileCreation", { clear = true })
-    vim.api.nvim_create_autocmd("BufNewFile", {
-      group = "LatexFileCreation",
-      pattern = "*.tex",
-      callback = function()
-        -- Delay to ensure filetype is set and buffer is correctly initialized
-        vim.defer_fn(create_latex_template, 100) -- Delay for 100 milliseconds
+      -- Paper/book-like environment for .tex files
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "tex",
+        callback = function()
+          -- Writing-friendly settings
+          vim.opt_local.wrap = true
+          vim.opt_local.linebreak = true
+          vim.opt_local.breakindent = true
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
+          vim.opt_local.signcolumn = "no"
+          vim.opt_local.colorcolumn = ""
+          vim.opt_local.cursorline = false
+          vim.opt_local.spell = true
+          vim.opt_local.spelllang = "en_us"
+          vim.opt_local.conceallevel = 2
+          vim.opt_local.omnifunc = "vimtex#complete#omnifunc"
+
+          -- Soft wrap navigation
+          vim.keymap.set({ "n", "v" }, "j", "gj", { buffer = true, silent = true })
+          vim.keymap.set({ "n", "v" }, "k", "gk", { buffer = true, silent = true })
+
+          -- Auto-enable zen mode for distraction-free writing
+          vim.defer_fn(function()
+            local ok, zen = pcall(require, "zen-mode")
+            if ok then
+              zen.open()
+            end
+          end, 200)
+        end,
+      })
+    end,
+  },
+
+  -- Zen mode for distraction-free writing
+  {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    ft = "tex",
+    opts = {
+      window = {
+        backdrop = 1,
+        width = 80,
+        height = 1,
+        options = {
+          signcolumn = "no",
+          number = false,
+          relativenumber = false,
+          cursorline = false,
+          cursorcolumn = false,
+          foldcolumn = "0",
+          list = false,
+        },
+      },
+      plugins = {
+        options = {
+          enabled = true,
+          ruler = false,
+          showcmd = false,
+          laststatus = 0,
+        },
+        twilight = { enabled = false },
+        gitsigns = { enabled = false },
+      },
+      on_open = function()
+        -- Set solid background for paper-like feel (override transparency)
+        -- Using rose-pine base color
+        vim.cmd("highlight Normal guibg=#191724")
+        vim.cmd("highlight NormalFloat guibg=#191724")
+        vim.cmd("highlight ZenBg guibg=#191724")
       end,
-    })
-
-    -- Create an autocommand group for compiling LaTeX files
-    vim.api.nvim_create_augroup("LatexCompile", { clear = true })
-    vim.api.nvim_create_autocmd("BufReadPost", {
-      group = "LatexCompile",
-      pattern = "*.tex",
-      callback = function()
-        -- Delay to ensure filetype and Vimtex setup
-        vim.defer_fn(function()
-          if vim.api.nvim_buf_get_option(0, 'filetype') == 'tex' then
-            vim.defer_fn(compile_latex_file, 100) -- Delay for 100 milliseconds
-          end
-        end, 100)                                 -- Delay for 100 milliseconds
+      on_close = function()
+        -- Restore transparency when leaving zen mode
+        vim.cmd("highlight Normal guibg=none")
+        vim.cmd("highlight NormalFloat guibg=none")
       end,
-    })
-  end
+    },
+  },
+
+  -- Twilight for dimming inactive code
+  {
+    "folke/twilight.nvim",
+    cmd = "Twilight",
+    opts = {
+      dimming = {
+        alpha = 0.25,
+      },
+      context = 10,
+      treesitter = true,
+      expand = {
+        "generic_environment",
+        "math_environment",
+        "displayed_equation",
+        "section",
+        "subsection",
+        "subsubsection",
+        "paragraph",
+      },
+      exclude = {
+        "text",
+        "word",
+        "curly_group",
+        "brack_group",
+        "command",
+        "line_break",
+      },
+    },
+  },
 }

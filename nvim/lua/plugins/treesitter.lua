@@ -7,7 +7,10 @@ return {
       config.setup({
         ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "terraform", "go", "html", "css", "javascript", "yaml"},
         auto_install = true,
-        highlight = { enable = true },
+        highlight = {
+          enable = true,
+          disable = { "latex" },
+        },
         indent = { enable = true },
       })
     end
