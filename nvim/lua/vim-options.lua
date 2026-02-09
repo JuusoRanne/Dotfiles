@@ -1,5 +1,14 @@
 -- basic settings
 vim.cmd("set expandtab")
+
+-- Diagnostic display configuration
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+})
 vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
