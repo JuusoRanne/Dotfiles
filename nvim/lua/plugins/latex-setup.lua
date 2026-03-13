@@ -10,6 +10,7 @@ return {
       -- Compiler settings
       vim.g.vimtex_compiler_method = "latexmk"
       vim.g.vimtex_compiler_latexmk = {
+        bibtex_backend = "biber",
         options = {
           "-pdf",
           "-shell-escape",
@@ -158,11 +159,14 @@ return {
         gitsigns = { enabled = false },
       },
       on_open = function()
-        -- Set solid background for paper-like feel (override transparency)
-        -- Using rose-pine base color
-        vim.cmd("highlight Normal guibg=#191724")
-        vim.cmd("highlight NormalFloat guibg=#191724")
-        vim.cmd("highlight ZenBg guibg=#191724")
+        -- Let the active colorscheme provide its background (removes transparency)
+        local bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
+        if bg then
+          local hex = string.format("#%06x", bg)
+          vim.cmd("highlight Normal guibg=" .. hex)
+          vim.cmd("highlight NormalFloat guibg=" .. hex)
+          vim.cmd("highlight ZenBg guibg=" .. hex)
+        end
       end,
       on_close = function()
         -- Restore transparency when leaving zen mode
