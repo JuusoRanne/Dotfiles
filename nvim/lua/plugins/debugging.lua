@@ -7,7 +7,12 @@ return {
 	},
 	config = function()
     require("dapui").setup()
-		require("dap-go").setup()
+		require("dap-go").setup({
+			dap_configurations = {},
+			delve = {
+				path = vim.fn.expand("$HOME") .. "/go/bin/dlv",
+			},
+		})
 
 		local dap, dapui = require("dap"), require("dapui")
 

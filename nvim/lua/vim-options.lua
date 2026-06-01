@@ -39,5 +39,9 @@ vim.keymap.set("n", "<leader>cp", "<cmd>Copilot chat prompts<CR>", { desc = "Ope
 vim.filetype.add({
   extension = {
     tfvars = "text",  -- tfvars is not supported by terraformls, this is workaround
-  }
+    tmpl = "gotmpl",
+  },
+  pattern = {
+    [".*/templates/.*%.tmpl"] = "gotmpl",
+  },
 })
