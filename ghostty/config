@@ -33,6 +33,8 @@ macos-titlebar-style = transparent
 confirm-close-surface = false
 shell-integration-features = false
 
+keybind = ctrl+shift+a=toggle_background_opacity
+
 keybind = cmd+t=unbind
 keybind = cmd+n=unbind
 keybind = cmd+c=unbind

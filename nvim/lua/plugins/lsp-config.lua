@@ -121,6 +121,18 @@ return {
 				capabilities = capabilities,
 				filetypes = { "yaml", "yml" },
 				root_markers = { ".git" },
+				-- yamlls 1.23.0 crashes when rootUri has no scheme (Neovim 0.12 sends
+				-- vim.NIL when no root marker is found). Fall back to cwd.
+				before_init = function(params)
+					if type(params.rootUri) ~= "string" then
+						local cwd = vim.fn.getcwd()
+						params.rootUri = vim.uri_from_fname(cwd)
+						params.rootPath = cwd
+						if type(params.workspaceFolders) ~= "table" then
+							params.workspaceFolders = { { uri = params.rootUri, name = cwd } }
+						end
+					end
+				end,
 				settings = {
 					yaml = {
 						schemas = {
